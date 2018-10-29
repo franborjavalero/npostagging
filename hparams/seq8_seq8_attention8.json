@@ -1,0 +1,14 @@
+{
+    "arch": "seq2seq", 
+    "hidden_encoder": [8],
+    "hidden_decoder": [8],  
+    "unit_type": "lstm_cpu",
+    "attention_size": 8,
+    "beam_width":1,
+    "num_epochs": 500,
+    "batch_size": 128,
+    "seed": 8,
+    "learning_rate": 0.003,
+    "max_grad_norm": 5,
+    "max_stopping_step": 5
+}

@@ -1,0 +1,11 @@
+{
+    "arch": "rnn", 
+    "hidden_rnn": [8],  
+    "unit_type": "lstm_cpu",
+    "num_epochs": 500,
+    "batch_size": 128,
+    "seed": 8,
+    "learning_rate": 0.003,
+    "max_grad_norm": 5,
+    "max_stopping_step": 5
+}
