@@ -1,53 +1,85 @@
-# NPoStagging: Neural Part-of-speech tagging
-This is an open source implementation of our neural part-of-speech tagging system, described in my bachelor's thesis.  
+# Neural part-of-speech tagging
+This is an open source implementation of my neural part-of-speech tagging system, described in my bachelor's thesis:
+
+Francisco de Borja Valero. 2018. **[Neural part-of-speech tagging](https://rua.ua.es/dspace/bitstream/10045/84670/1/Neural_partofspeech_tagging_VALERO_ANTON_FRANCISCO_DE_BORJA.pdf)**.
 
 Requirements
 --------
-- [Python](https://www.python.org) (tested wtih 3.6.5)
+- [Python](https://www.python.org) (tested with 3.6.5)
 - [TensorFlow](https://www.tensorflow.org) (tested with 1.10.1)
-- [NLTK](https://www.nltk.org) (tested with 3.3.0, only used word_tokenize)
+- [NLTK](https://www.nltk.org) (tested with 3.3.0)
 
 Usage
 --------
 
-The following command cleans original Wall Street Journal dataset and save it in a new directory:
+The following command cleans the original Wall Street Journal (WSJ) dataset:
 ```
 python3 preprocess.py clean_wsj_treebank PATH_RAW_CORPUS --destiny_directory PATH_CLEANED_CORPUS
 ```
-Optionally, the split sections can be indicated using `--sections_train ID_START-ID_END`, the same with `--sections_dev` and `--sections_test`. By the default their respective values are `0-18`, `19-21` and `22-24`. 
 
-The following command gets ambiguity classes from `PATH_CLEANED_CORPUS`:
+- `PATH_RAW_CORPUS` is the directory of the original WSJ dataset.
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset.
+
+- Optionally, the sections of the sets can be indicated using the next arguments (below are shown the defaults values):
+  - `--sections_train` `0-18`.
+  - `--sections_dev` `19-21`.
+  - `--sections_test` `22-24`. 
+
+The following command gets ambiguity classes:
 ```
 python3 preprocess.py get_ambiguities PATH_CLEANED_CORPUS
 ```
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset in which stores the ambiguity classes.
 
-The following command generates persistence input and desired output files, in order to train and evaluate models and baselines.
+The following command generates persistence input and desired output files, in order to train and evaluate models/baselines.
 ```
 python3 preprocess.py generate_corpus PATH_CLEANED_CORPUS --set SET
 ```
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset in which stores the persistence files.
+- `SET`: `train`, `dev` and `test`.
 
-The following command gets an array of apparitions for each baseline:
+The following command gets an array of occurrences for each baseline:
 ```
 python3 baselines.py get PATH_CLEANED_CORPUS
 ```
-
-The following command evaluate the baselines given a set:
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset in which stores the array of occurrences for each baseline.
+  
+The following command evaluates the three proposed baselines:
 ```
 python3 evaluate.py get PATH_CLEANED_CORPUS --set SET
 ```
-
-The following command trains a neural part-of-speech model given its description in a JSON file.
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset.
+- `SET`: `train`, `dev` and `test`.
+ 
+The following command trains a neural part-of-speech model:
 ```
 python3 train.py PATH_CLEANED_CORPUS PATH_ARCH_DESC.JSON MODEL_NAME
 ```
-The following command evaluate a neural part-of-speech model given a set:
+
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset.
+- `PATH_ARCH_DESC.JSON` is the file that describes the model like examples located in the folder **[hparams](https://github.com/franborjavalero/npostagging/tree/master/hparams)**.
+- `MODEL_NAME` is the neural part-of-speech model name.
+  
+The following command evaluates a neural part-of-speech model:
 ```
 python3 evaluate.py PATH_CLEANED_CORPUS ARCH_DESC.JSON MODEL_NAME --set SET
 ```
-The following command disambiguate a raw file using a trained neural part-of-speech model:
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset.
+- `PATH_ARCH_DESC.JSON` is the file that describes the model like examples located in the folder **[hparams](https://github.com/franborjavalero/npostagging/tree/master/hparams)**.
+- `MODEL_NAME` is the neural part-of-speech model name.
+- `SET`: `train`, `dev` and `test`.
+  
+The following command disambiguates a raw file using a trained neural part-of-speech model:
 ```
 python3 tagger.py PATH_CLEANED_CORPUS ARCH_DESC.JSON MODEL_NAME PATH_INPUT.TXT PATH_OUTPUT.TXT
 ```
+
+- `PATH_CLEANED_CORPUS` is the directory of the preprocessed WSJ dataset.
+- `PATH_ARCH_DESC.JSON` is the file that describes the model like examples located in the folder **[hparams](https://github.com/franborjavalero/npostagging/tree/master/hparams)**.
+- `MODEL_NAME` is the neural part-of-speech model name.
+- `SET`: `train`, `dev` and `test`.
+- `PATH_INPUT.TXT` is the input raw file.
+- `PATH_OUTPUT.TXT` is the output disambiguate file.
 
 #### Reproducing results
 
@@ -66,6 +98,8 @@ python3 tagger.py PATH_CLEANED_CORPUS ARCH_DESC.JSON MODEL_NAME PATH_INPUT.TXT P
     ./train_wsj.sh
     ./evaluate_wsj.sh
     ```
+
+- `path_wsj.tgz` is the compressed file of the original WSJ dataset.
 
 ## License
 
